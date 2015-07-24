@@ -97,17 +97,33 @@
           });
         },
         next: function() {
-          var _this = this;
+          var _this = this,
+              nextPoint = ++boneVojage_main.settings.currPoint,
+              beforeModal = boneVojage_main.settings.points[nextPoint].beforeModal,
+              afterModal = boneVojage_main.settings.points[nextPoint].afterModal;
+
+              beforeModal ? beforeModal() : null;
+
           boneVojage_main.settings.tryPositionCount = 0;
-          return boneVojage_main.O.makeModalPosition(boneVojage_main.settings.points[++boneVojage_main.settings.currPoint].selector, boneVojage_main.options.offset).done(function() {
-            return boneVojage_main.O.showModal();
+          return boneVojage_main.O.makeModalPosition(boneVojage_main.settings.points[nextPoint].selector, boneVojage_main.options.offset).done(function() {
+            var result = boneVojage_main.O.showModal();
+            afterModal ? afterModal() : null;
+            return result
           });
         },
         prev: function() {
-          var _this = this;
+          var _this = this,
+              prevPoint = --boneVojage_main.settings.currPoint,
+              beforeModal = boneVojage_main.settings.points[prevPoint].beforeModal,
+              afterModal = boneVojage_main.settings.points[prevPoint].afterModal;
+
+          beforeModal ? beforeModal() : null;
+
           boneVojage_main.settings.tryPositionCount = 0;
-          return boneVojage_main.O.makeModalPosition(boneVojage_main.settings.points[--boneVojage_main.settings.currPoint].selector, boneVojage_main.options.offset).done(function() {
-            return boneVojage_main.O.showModal();
+          return boneVojage_main.O.makeModalPosition(boneVojage_main.settings.points[prevPoint].selector, boneVojage_main.options.offset).done(function() {
+            var result = boneVojage_main.O.showModal();
+            afterModal ? afterModal() : null;
+            return result
           });
         },
         getGSides: function($el) {
