@@ -35,7 +35,27 @@
         } else {
           buttons = '';
         }
-        boneVojage_main.settings.$body.append('<div id="modal_top"></div>' + '<div id="modal_bottom"></div>' + '<div id="modal_left"></div>' + '<div id="modal_right"></div>' + '<div id="tooltip"><div id="close"></div>' + '<div id="text"></div>' + buttons + '<ul></ul>' + '</div>');
+        var modalTop = $('div#modal_top'),
+            modalBottom = $('div#modal_bottom'),
+            modalLeft = $('div#modal_left'),
+            modalRight = $('div#modal_right'),
+            toolTip = $('div#tooltip');
+
+        if (!modalTop) {
+          boneVojage_main.settings.$body.append('<div id="modal_top"></div>');
+        }
+        if (!modalBottom) {
+          boneVojage_main.settings.$body.append('<div id="modal_bottom"></div>');
+        }
+        if (!modalLeft) {
+          boneVojage_main.settings.$body.append('<div id="modal_left"></div>');
+        }
+        if (!modalRight) {
+          boneVojage_main.settings.$body.append('<div id="modal_right"></div>');
+        }
+        if (!toolTip) {
+          boneVojage_main.settings.$body.append('<div id="tooltip"><div id="close"></div>' + '<div id="title"></div>' + '<div id="text"></div>' + buttons + '<ul></ul>' + '</div>');
+        }
         boneVojage_main.settings.$modalTop = $('div#modal_top');
         boneVojage_main.settings.$modalBottom = $('div#modal_bottom');
         boneVojage_main.settings.$modalLeft = $('div#modal_left');
@@ -352,6 +372,7 @@
                 width: boneVojage_main.settings.$body.outerWidth() - ($el.offset().left + $el.outerWidth()) - offset
               });
               boneVojage_main.settings.$tooltip.find('#text').text(boneVojage_main.settings.points[boneVojage_main.settings.currPoint].text);
+              boneVojage_main.settings.$tooltip.find('#title').text(boneVojage_main.settings.points[boneVojage_main.settings.currPoint].title);
               boneVojage_main.O.addControls();
               return boneVojage_main.O.makeTooltipPosition(boneVojage_main.options.position, $el, offset);
             }
