@@ -332,50 +332,69 @@
             normScrollY: normScrollY
           };
         },
+        waitForSelector: function(selector, deferred){
+          var $selector, deferred;
+
+          if (!deferred){
+            deferred = $.Deferred();
+          }
+
+          $selector = $(selector);
+
+          if ($selector.length > 0){
+            deferred.resolve($selector);
+          }else{
+            setTimeout(boneVojage_main.O.waitForSelector(selector, deferred), 500);
+          }
+
+          return deferred.promise();
+        },
         makeModalPosition: function(element) {
-          var $el, cnt, dfr, norm, offset;
-          $el = $(element);
-          norm = boneVojage_main.O.getPosition($el);
-          boneVojage_main.O.hideModal();
+          var cnt, dfr, norm, offset;
           dfr = $.Deferred();
           cnt = 0;
           offset = boneVojage_main.options.offset;
-          boneVojage_main.settings.$tooltip.find('li').eq(boneVojage_main.settings.currPoint).addClass('active').siblings().removeClass('active');
-          boneVojage_main.settings.$body_html.stop(true, false).animate({
-            'scrollTop': norm.normScrollH,
-            'scrollLeft': norm.normScrollY
-          }, boneVojage_main.options.delay, function() {
-            if (cnt++ === 0) {
-              dfr.resolve();
-              boneVojage_main.settings.$modalTop.css({
-                position: norm.fixed,
-                height: ($el.offset().top - offset) - norm.normH,
-                width: $el.outerWidth() + (offset * 2),
-                left: $el.offset().left - offset - norm.normY
-              });
-              boneVojage_main.settings.$modalBottom.css({
-                position: norm.fixed,
-                height: $(document).outerHeight() - $el.offset().top - $el.outerHeight() - offset + norm.normY,
-                width: $el.outerWidth() + (offset * 2),
-                left: $el.offset().left - offset - norm.normY,
-                top: $el.offset().top + $el.outerHeight() + offset - norm.normH
-              });
-              boneVojage_main.settings.$modalLeft.css({
-                position: norm.fixed,
-                width: boneVojage_main.settings.$body.outerWidth() - (boneVojage_main.settings.$body.outerWidth() - $el.offset().left) - offset - norm.normY,
-                height: $(document).outerHeight() - norm.normH
-              });
-              boneVojage_main.settings.$modalRight.css({
-                position: norm.fixed,
-                left: ($el.offset().left + $el.outerWidth() + offset) - norm.normY,
-                height: $(document).outerHeight() - norm.normH,
-                width: boneVojage_main.settings.$body.outerWidth() - ($el.offset().left + $el.outerWidth()) - offset
-              });
-              boneVojage_main.settings.$tooltip.find('#text').text(boneVojage_main.settings.points[boneVojage_main.settings.currPoint].text);
-              boneVojage_main.settings.$tooltip.find('#title').text(boneVojage_main.settings.points[boneVojage_main.settings.currPoint].title);
-              boneVojage_main.O.addControls();
-              return boneVojage_main.O.makeTooltipPosition(boneVojage_main.options.position, $el, offset);
-            }
+
+          boneVojage_main.O.waitForSelector(element).done(function($el){
+            norm = boneVojage_main.O.getPosition($el);
+            boneVojage_main.O.hideModal();
+            boneVojage_main.settings.$tooltip.find('li').eq(boneVojage_main.settings.currPoint).addClass('active').siblings().removeClass('active');
+            boneVojage_main.settings.$body_html.stop(true, false).animate({
+              'scrollTop': norm.normScrollH,
+              'scrollLeft': norm.normScrollY
+            }, boneVojage_main.options.delay, function() {
+              if (cnt++ === 0) {
+                dfr.resolve();
+                boneVojage_main.settings.$modalTop.css({
+                  position: norm.fixed,
+                  height: ($el.offset().top - offset) - norm.normH,
+                  width: $el.outerWidth() + (offset * 2),
+                  left: $el.offset().left - offset - norm.normY
+                });
+                boneVojage_main.settings.$modalBottom.css({
+                  position: norm.fixed,
+                  height: $(document).outerHeight() - $el.offset().top - $el.outerHeight() - offset + norm.normY,
+                  width: $el.outerWidth() + (offset * 2),
+                  left: $el.offset().left - offset - norm.normY,
+                  top: $el.offset().top + $el.outerHeight() + offset - norm.normH
+                });
+                boneVojage_main.settings.$modalLeft.css({
+                  position: norm.fixed,
+                  width: boneVojage_main.settings.$body.outerWidth() - (boneVojage_main.settings.$body.outerWidth() - $el.offset().left) - offset - norm.normY,
+                  height: $(document).outerHeight() - norm.normH
+                });
+                boneVojage_main.settings.$modalRight.css({
+                  position: norm.fixed,
+                  left: ($el.offset().left + $el.outerWidth() + offset) - norm.normY,
+                  height: $(document).outerHeight() - norm.normH,
+                  width: boneVojage_main.settings.$body.outerWidth() - ($el.offset().left + $el.outerWidth()) - offset
+                });
+                boneVojage_main.settings.$tooltip.find('#text').text(boneVojage_main.settings.points[boneVojage_main.settings.currPoint].text);
+                boneVojage_main.settings.$tooltip.find('#title').text(boneVojage_main.settings.points[boneVojage_main.settings.currPoint].title);
+                boneVojage_main.O.addControls();
+                return boneVojage_main.O.makeTooltipPosition(boneVojage_main.options.position, $el, offset);
+              }
+            });
           });
           return dfr.promise();
         }
