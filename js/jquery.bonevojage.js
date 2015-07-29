@@ -41,19 +41,19 @@
             modalRight = $('div#modal_right'),
             toolTip = $('div#tooltip');
 
-        if (!modalTop) {
+        if (!modalTop.length > 0) {
           boneVojage_main.settings.$body.append('<div id="modal_top"></div>');
         }
-        if (!modalBottom) {
+        if (!modalBottom.length > 0) {
           boneVojage_main.settings.$body.append('<div id="modal_bottom"></div>');
         }
-        if (!modalLeft) {
+        if (!modalLeft.length > 0) {
           boneVojage_main.settings.$body.append('<div id="modal_left"></div>');
         }
-        if (!modalRight) {
+        if (!modalRight.length > 0) {
           boneVojage_main.settings.$body.append('<div id="modal_right"></div>');
         }
-        if (!toolTip) {
+        if (!toolTip.length > 0) {
           boneVojage_main.settings.$body.append('<div id="tooltip"><div id="close"></div>' + '<div id="title"></div>' + '<div id="text"></div>' + buttons + '<ul></ul>' + '</div>');
         }
         boneVojage_main.settings.$modalTop = $('div#modal_top');
@@ -344,7 +344,9 @@
           if ($selector.length > 0){
             deferred.resolve($selector);
           }else{
-            setTimeout(boneVojage_main.O.waitForSelector(selector, deferred), 500);
+            setTimeout(function(){
+              boneVojage_main.O.waitForSelector(selector, deferred);
+            }, 500);
           }
 
           return deferred.promise();
